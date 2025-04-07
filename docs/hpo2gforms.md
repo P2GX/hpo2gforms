@@ -13,7 +13,7 @@ hpo2forms requires Java version 21 or higher. Java JDKs can be downloaded from m
 hpo2forms is built with [maven](https://maven.apache.org/){:target="_blank"}. First use git to clone the code and then build it.
 
 ```
-git clone https://github.com/monarch-initiative/hpo2gforms.git
+git clone https://github.com/P2GX/hpo2gforms.git
 cd hpo2gforms
 mvn clean package
 ```
@@ -51,7 +51,9 @@ Now choose the target term -- the base term for creating the questionnare. For i
 [Abnormal nonverbal communicative behavior HP:0000758](https://hpo.jax.org/browse/term/HP:0000758){:target="_blank"}, enter the "-t" argument as 0000758.
 
 ```
-$ java -jar target/hpo2gforms.jar gforms -t 0000758
+$ java -jar target/hpo2gforms.jar gforms -t 0000758 [-l]
 ```
 
-This will create a new file with the Google Apps code. See [Google Apps](gapps.md) for details on how to run this in the Google apps console.
+This will create a new file with the Google Apps code. 
+See [Google Apps](gapps.md) for details on how to run this in the Google apps console.
+The ``-l`` flag (for limit) causes the app to output only three questions and is intended to be used for testing.
