@@ -37,6 +37,8 @@ public class GoogleFormsCommand extends HPOCommand implements Callable<Integer> 
     @CommandLine.Option(names={"-x","--max"}, description = "maximum items per questionnaire (default: ${DEFAULT-VALUE} )")
     private Integer maxItemsPerQuestionnaire = 25;
 
+    @CommandLine.Option(names={"-l", "--limit"}, description = "limit output to 3 items (for testing")
+    private boolean limit = false;
 
 
     @Override
@@ -55,6 +57,9 @@ public class GoogleFormsCommand extends HPOCommand implements Callable<Integer> 
             int part = i+1;
             String fname = fnames.get(i);
             List<Term> terms = termIdPartition.get(i);
+            if (limit) {
+                terms = terms.stream().limit(3).toList();
+            }
             GoogleForm gform = new GoogleForm(terms, hpoOntology, targetId, part);
             String fxn = gform.getFunction();
             System.out.println(fxn);
@@ -64,6 +69,7 @@ public class GoogleFormsCommand extends HPOCommand implements Callable<Integer> 
             } catch (IOException e) {
                 throw new PhenolRuntimeException(e);
             }
+            if (limit) break;
         }
 
         return 0;
