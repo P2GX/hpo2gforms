@@ -1,30 +1,17 @@
 package org.monarchinitiative.hpo2gforms.gform;
 
-import org.monarchinitiative.phenol.base.PhenolRuntimeException;
-import org.monarchinitiative.phenol.ontology.data.Ontology;
-import org.monarchinitiative.phenol.ontology.data.Term;
-import org.monarchinitiative.phenol.ontology.data.TermId;
 
-import java.util.ArrayList;
+
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class GoogleForm {
-
-    private final Ontology ontology;
-    private final TermId targetId;
+public class TsvGoogleForm {
     private final int questionnairePart;
-    private final List<FormItem> formItemList;
+    private final List<TsvFormItem> formItemList;
 
-    public GoogleForm(List<Term> termList, Ontology hpoOntology, TermId targetId, int part) {
-        this.ontology = hpoOntology;
-        this.targetId = targetId;
+    public TsvGoogleForm(List<TsvFormItem> itemList, int part) {
         this.questionnairePart = part;
-        this.formItemList = new ArrayList<>();
-        for (Term term : termList) {
-            this.formItemList.add(FormItem.fromTerm(term, this.ontology));
-        }
+        this.formItemList = itemList;
     }
 
     /**
@@ -33,7 +20,7 @@ public class GoogleForm {
      */
     public String getFunction() {
         String termsArray = formItemList.stream()
-                .map(FormItem::toJsonObject)
+                .map(TsvFormItem::toJsonObject)
                 .collect(Collectors.joining(",\n"));
 
         return TEMPLATE
@@ -42,12 +29,7 @@ public class GoogleForm {
     }
 
     private String getQuestionnaireTitle() {
-        Optional<Term> opt = ontology.termForTermId(targetId);
-        if (opt.isEmpty()) {
-            throw new PhenolRuntimeException("Could not find term for target " + targetId);
-        }
-        Term term = opt.get();
-        return String.format("%s (%s) part %d", term.getName(), targetId.getValue(), questionnairePart);
+        return String.format("HPO Questionnaire part %d", questionnairePart);
     }
 
     /**
