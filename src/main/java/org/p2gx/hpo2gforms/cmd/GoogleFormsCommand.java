@@ -1,9 +1,9 @@
-package org.monarchinitiative.hpo2gforms.cmd;
+package org.p2gx.hpo2gforms.cmd;
 
-import org.monarchinitiative.hpo2gforms.gform.GoogleForm;
 import org.monarchinitiative.phenol.base.PhenolRuntimeException;
 import org.monarchinitiative.phenol.io.OntologyLoader;
 import org.monarchinitiative.phenol.ontology.data.*;
+import org.p2gx.hpo2gforms.gform.GoogleForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import picocli.CommandLine;

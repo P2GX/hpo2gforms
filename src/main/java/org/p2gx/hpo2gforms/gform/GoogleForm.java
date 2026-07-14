@@ -1,17 +1,30 @@
-package org.monarchinitiative.hpo2gforms.gform;
+package org.p2gx.hpo2gforms.gform;
 
+import org.monarchinitiative.phenol.base.PhenolRuntimeException;
+import org.monarchinitiative.phenol.ontology.data.Ontology;
+import org.monarchinitiative.phenol.ontology.data.Term;
+import org.monarchinitiative.phenol.ontology.data.TermId;
 
-
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class TsvGoogleForm {
-    private final int questionnairePart;
-    private final List<TsvFormItem> formItemList;
+public class GoogleForm {
 
-    public TsvGoogleForm(List<TsvFormItem> itemList, int part) {
+    private final Ontology ontology;
+    private final TermId targetId;
+    private final int questionnairePart;
+    private final List<FormItem> formItemList;
+
+    public GoogleForm(List<Term> termList, Ontology hpoOntology, TermId targetId, int part) {
+        this.ontology = hpoOntology;
+        this.targetId = targetId;
         this.questionnairePart = part;
-        this.formItemList = itemList;
+        this.formItemList = new ArrayList<>();
+        for (Term term : termList) {
+            this.formItemList.add(FormItem.fromTerm(term, this.ontology));
+        }
     }
 
     /**
@@ -20,7 +33,7 @@ public class TsvGoogleForm {
      */
     public String getFunction() {
         String termsArray = formItemList.stream()
-                .map(TsvFormItem::toJsonObject)
+                .map(FormItem::toJsonObject)
                 .collect(Collectors.joining(",\n"));
 
         return TEMPLATE
@@ -29,7 +42,12 @@ public class TsvGoogleForm {
     }
 
     private String getQuestionnaireTitle() {
-        return String.format("HPO Questionnaire part %d", questionnairePart);
+        Optional<Term> opt = ontology.termForTermId(targetId);
+        if (opt.isEmpty()) {
+            throw new PhenolRuntimeException("Could not find term for target " + targetId);
+        }
+        Term term = opt.get();
+        return String.format("%s (%s) part %d", term.getName(), targetId.getValue(), questionnairePart);
     }
 
     /**

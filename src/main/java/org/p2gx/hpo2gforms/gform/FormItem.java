@@ -1,4 +1,4 @@
-package org.monarchinitiative.hpo2gforms.gform;
+package org.p2gx.hpo2gforms.gform;
 
 import org.monarchinitiative.phenol.ontology.data.*;
 

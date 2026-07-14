@@ -73,6 +73,12 @@ Using the "Recent" button in Google Drive, the top file is called "Yellow/white 
 </figure>
 
 
+## Finding the code
+Right after you run it (best immediate option):
+Your script already logs the URL: Logger.log('Form created: ' + form.getEditUrl());. After clicking Run, open the execution log — either View → Logs, or Ctrl+Enter (Cmd+Enter on Mac) — and you'll see a clickable link straight to the Form's editor. That's the most direct route, no searching needed.
+
+
+
 ### Form items
 
 The script creates one set of questions for each term

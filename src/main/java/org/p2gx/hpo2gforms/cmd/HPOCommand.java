@@ -1,4 +1,4 @@
-package org.monarchinitiative.hpo2gforms.cmd;
+package org.p2gx.hpo2gforms.cmd;
 
 
 import org.monarchinitiative.phenol.base.PhenolRuntimeException;
